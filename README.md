@@ -19,45 +19,49 @@ If you do not want to copy the `boardconfig.h`, delete the include in `twi_drv.c
 
 ###### `void twi_init()`
 
-Initializes TWI.
-Should be called once before calling any other TWI functions.
-Interrupts need to be enabled externally via sei() >>BEFORE<< initialization.
+Initializes TWI. Should be called once before calling any other TWI functions.
+
+Interrupts need to be enabled externally via `sei()` **BEFORE** initialization.
 
 ###### `uint8_t twi_beginRead(uint8_t address, uint8_t length)`
 
 Begin reading from address (a specific amount of bytes).
-Data can be read by calling twi_getTransmissionData() as soon as twi_isBusy() returns 0.
 
+Data can be read by calling `twi_getReceivedData()` as soon as `twi_isBusy()` returns 0.
+
+*params:*
 * address - address to read from
 * length - amount of bytes to read
 
-returns 1 on success, 0 if twi is busy (another transmission is running)
+*returns:* 1 on success, 0 if twi is busy (another transmission is running)
 
 ###### `uint8_t twi_beginWrite(uint8_t address, uint8_t* data, uint8_t length)`
 
 Begin writing to address.
 
+*params:*
 * address - address to write to
 * data - pointer to array of data-bytes
 * length - amount of bytes in data-array (amount of bytes to write)
 
-returns 1 on success, 0 if twi is busy (another transmission is running)
+*returns:* 1 on success, 0 if twi is busy (another transmission is running)
 
 ###### `uint8_t twi_isBusy()`
 
 Check if TWI is busy. Busy means that a transmission is running.
 
-returns 1 if twi is busy, 0 otherwise
+*returns:* 1 if twi is busy, 0 otherwise
 
 ###### `uint8_t twi_getReceivedData(uint8_t* outAddress, uint8_t* outData, uint8_t* outLength)`
 
 Get received data from last transmission (if it was a read operation).
 
+*params:*
 * outAddress - output pointer for read address, can be null
 * outData - output pointer to array for data-bytes
 * outLength - output pointer for read amount of bytes, can be null
 
-returns 1 on success, 0 if twi is busy or last transmission was not a read operation.
+*returns:* 1 on success, 0 if twi is busy or last transmission was not a read operation.
 
 ## Definitions
 
