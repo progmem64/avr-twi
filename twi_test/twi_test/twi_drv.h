@@ -15,6 +15,7 @@
 
 /**
  * Initializes TWI.
+ * Should be called once before calling any other TWI functions.
  * Interrupts need to be enabled externally via sei() >>BEFORE<< initialization.
  */
 void twi_init();
@@ -53,7 +54,7 @@ uint8_t twi_isBusy();
  * @param outAddress output pointer for read address, can be null
  * @param outData output pointer to array for data-bytes
  * @param outLength output pointer for read amount of bytes, can be null
- * @param 1 on success, 0 if twi is busy or last transmission was not a read operation.
+ * @returns 1 on success, 0 if twi is busy or last transmission was not a read operation.
  */
 uint8_t twi_getReceivedData(uint8_t* outAddress, uint8_t* outData, uint8_t* outLength);
 

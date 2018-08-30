@@ -1,51 +1,70 @@
-# avr-twi
+# avr-twi-master-driver
 
-Nonblocking TWI/I2C master driver for Atmel AVR
+Nonblocking TWI/I2C master driver for Atmel AVR.
+
+Test configured for Atmega 2560.
+
+## Setup
+
+Driver can be found in: 
+* `twi_test/twi_test/twi_drv.h`
+* `twi_test/twi_test/twi_drv.c`
+
+In order to use the driver, you also need to copy the file
+`twi_test/twi_test/boardconfig.h` and set `F_CPU` to the correct value.
+
+If you do not want to copy the `boardconfig.h`, delete the include in `twi_drv.c` and define `F_CPU` somewhere else.
 
 ## API
 
 ###### `void twi_init()`
 
-Initializes the driver.  Should be called once before calling any other TWI functions.
+Initializes TWI.
+Should be called once before calling any other TWI functions.
+Interrupts need to be enabled externally via sei() >>BEFORE<< initialization.
 
-###### `void twi_write(uint8_t address, uint8_t* data, uint8_t length, void (*callback)(uint8_t address, uint8_t *data))`
+##### `uint8_t twi_beginRead(uint8_t address, uint8_t length)`
 
-Writes data to the given address.
+Begin reading from address (a specific amount of bytes).
+Data can be read by calling twi_getTransmissionData() as soon as twi_isBusy() returns 0.
 
-* `address` - TWI slave address
-* `data` - pointer to data buffer
-* `length` - numer of bytes to write from the given data buffer
-* `callback` - function pointer to callback (called when write completes)
+* address - address to read from
+* length - amount of bytes to read
 
-The callback should accept two arguments:
+returns 1 on success, 0 if twi is busy (another transmission is running)
 
-* `address` - TWI slave address
-* `data` - pointer to data buffer that was written
+##### `uint8_t twi_beginWrite(uint8_t address, uint8_t* data, uint8_t length)`
 
-###### `void twi_read(uint8_t address, uint8_t length, void (*callback)(uint8_t address, uint8_t *data))`
+Begin writing to address.
 
-Reads data from the given address.
+* address - address to write to
+* data - pointer to array of data-bytes
+* length - amount of bytes in data-array (amount of bytes to write)
 
-* `address` - TWI slave address
-* `length` - number of bytes to read
-* `callback` - function pointer to callback (called when read is complete)
+returns 1 on success, 0 if twi is busy (another transmission is running)
 
-The callback should accept two arguments:
+##### `uint8_t twi_isBusy()`
 
-* `address` - TWI slave address
-* `data` - pointer to data buffer that was written
+Check if TWI is busy. Busy means that a transmission is running.
 
-###### `uint8_t *twi_wait()`
+returns 1 if twi is busy, 0 otherwise
 
-This will block until the current operation (read or write) completes or return immediately if there is no operation in progress.  It returns a pointer to the internal TWI buffer.  This is useful for performing initialization read/writes where asynchrony may be unnecessary.  Call it between read/write calls.
+##### `uint8_t twi_getReceivedData(uint8_t* outAddress, uint8_t* outData, uint8_t* outLength)`
 
-    twi_write(address, &data, 2, NULL);
-    twi_wait();
-    twi_read(address, 2, NULL);
-    uint8_t *result = twi_wait();
+Get received data from last transmission (if it was a read operation).
+
+* outAddress output pointer for read address, can be null
+* outData output pointer to array for data-bytes
+* outLength output pointer for read amount of bytes, can be null
+
+returns 1 on success, 0 if twi is busy or last transmission was not a read operation.
 
 ## Definitions
 
-* `F_CPU` - you should define this before including this library
-* `TWI_FREQ` - defaults to 100kHz if left undefined
-* `TWI_BUFFER_LENGTH` - defaults to 32 if left undefined
+* `F_CPU` - you should define this before including this library (read "Setup")
+* `TWI_FREQ` - defaults to 100kHz
+* `TWI_BUFFER_SIZE` - defaults to 32
+
+## Examples
+
+Look at the main.c from twi_test.
