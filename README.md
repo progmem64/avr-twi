@@ -53,9 +53,9 @@ returns 1 if twi is busy, 0 otherwise
 
 Get received data from last transmission (if it was a read operation).
 
-* outAddress output pointer for read address, can be null
-* outData output pointer to array for data-bytes
-* outLength output pointer for read amount of bytes, can be null
+* outAddress - output pointer for read address, can be null
+* outData - output pointer to array for data-bytes
+* outLength - output pointer for read amount of bytes, can be null
 
 returns 1 on success, 0 if twi is busy or last transmission was not a read operation.
 
@@ -65,6 +65,6 @@ returns 1 on success, 0 if twi is busy or last transmission was not a read opera
 * `TWI_FREQ` - defaults to 100kHz
 * `TWI_BUFFER_SIZE` - defaults to 32
 
-## Examples
+## Example
 
 Look at the main.c from twi_test.
