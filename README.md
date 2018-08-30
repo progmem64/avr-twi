@@ -23,7 +23,7 @@ Initializes TWI.
 Should be called once before calling any other TWI functions.
 Interrupts need to be enabled externally via sei() >>BEFORE<< initialization.
 
-##### `uint8_t twi_beginRead(uint8_t address, uint8_t length)`
+###### `uint8_t twi_beginRead(uint8_t address, uint8_t length)`
 
 Begin reading from address (a specific amount of bytes).
 Data can be read by calling twi_getTransmissionData() as soon as twi_isBusy() returns 0.
@@ -33,7 +33,7 @@ Data can be read by calling twi_getTransmissionData() as soon as twi_isBusy() re
 
 returns 1 on success, 0 if twi is busy (another transmission is running)
 
-##### `uint8_t twi_beginWrite(uint8_t address, uint8_t* data, uint8_t length)`
+###### `uint8_t twi_beginWrite(uint8_t address, uint8_t* data, uint8_t length)`
 
 Begin writing to address.
 
@@ -43,13 +43,13 @@ Begin writing to address.
 
 returns 1 on success, 0 if twi is busy (another transmission is running)
 
-##### `uint8_t twi_isBusy()`
+###### `uint8_t twi_isBusy()`
 
 Check if TWI is busy. Busy means that a transmission is running.
 
 returns 1 if twi is busy, 0 otherwise
 
-##### `uint8_t twi_getReceivedData(uint8_t* outAddress, uint8_t* outData, uint8_t* outLength)`
+###### `uint8_t twi_getReceivedData(uint8_t* outAddress, uint8_t* outData, uint8_t* outLength)`
 
 Get received data from last transmission (if it was a read operation).
 
