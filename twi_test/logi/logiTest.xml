@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<la>
+	<samplerate>1200000</samplerate>
+	<pretrigger>1</pretrigger>
+	<signals>
+		<signal name="scl">
+			<ch>1</ch>
+		</signal>
+		<signal name="sda">
+			<ch>0</ch>
+		</signal>
+	</signals>
+	<trigger when="A">
+		<A>
+			<ch when="falling_edge">0</ch>
+		</A>
+<!--
+		<B>
+			<ch when="falling_edge">1</ch>
+		</B>
+-->
+	</trigger>
+</la>
